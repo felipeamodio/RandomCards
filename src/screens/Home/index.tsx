@@ -1,56 +1,50 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
+import {Alert, Keyboard} from 'react-native'
 import * as S from './styles';
+
+import {useNavigation} from '@react-navigation/native';
 
 import theme from '../../global/theme';
 import Button from '../../components/Button';
 
-import { api } from '../../services/api';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { IStackRoutes } from '../../routes/index';
 
-export default function Home(){
-    const [card, setCard] = useState('');
-    const [nipe, setNipe] = useState('');
-    const [image, setImage] = useState('');
-    const [id, setId] = useState('');
+type CardScreenNavigationProp = NativeStackNavigationProp<IStackRoutes, "Cards">;
 
-    // useEffect(() => {
-    //     async function getId() {
-    //         const response = await api.get(`new/draw/?count=1`);
-    //         setId(response.data.deck_id);
-    //         console.tron.log('ID =>', response.data.deck_id);
-    //     }
-    //     getId();
-    // }, []);
+type HomeProps = {
+    navigation: CardScreenNavigationProp;
+}
 
-    // useEffect(() => {
-    //     async function getCard() {
-    //         const response = await api.get(`luhv4bwbqtcz/draw/?count=1`);
-    //         setCard(response.data.cards[0].value);
-    //         setNipe(response.data.cards[0].suit);
-    //         setImage(response.data.cards[0].image);
-    //         console.tron.log('VALUE =>', response.data.cards[0].value);
-    //         console.tron.log('NIPE =>', response.data.cards[0].suit);
-    //     }
-    //     getCard();
-    // }, [])
+export default function Home({navigation}: HomeProps){
+    const [name, setName] = useState();
 
-    async function getCard() {
-        const response = await api.get(`luhv4bwbqtcz/draw/?count=1`);
-        setCard(response.data.cards[0].value);
-        setNipe(response.data.cards[0].suit);
-        setImage(response.data.cards[0].image);
-        console.tron.log('VALUE =>', response.data.cards[0].value);
-        console.tron.log('NIPE =>', response.data.cards[0].suit);
+    const handleCards = () => {
+        if(name){
+            navigation.navigate('Cards')
+        }else{
+            Alert.alert('Preencha o campo antes de avançar');
+        }
     }
 
     return(
        <S.Container>
         <S.Degrade colors={[`${theme.colors.pokerGreen}`, `${theme.colors.lightGreen}`]}>
-        <S.Content>
-            <S.Label>carta: {card}</S.Label>
-            <S.Label>Nipe: {nipe}</S.Label>
-            <S.Card source={{uri: image}} />
-        </S.Content>
-            <Button background label='Sacar' onPress={getCard} />
+            <S.Content>
+                <S.Label>♥️ Olá, bora fazer um joguinho de cartas? ♠️</S.Label>
+                <S.Label>Mas antes, como você gostaria de ser chamado?</S.Label>
+            </S.Content>
+
+            <S.Containerinput>
+                <S.Input 
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                    placeholder="Digite o seu nome ou apelido"
+                    placeholderTextColor={theme.colors.grey}
+                    onSubmitEditing={Keyboard.dismiss}
+                />
+            </S.Containerinput>
+            <Button label='Ver cartas' onPress={handleCards} />
         </S.Degrade>
        </S.Container>
     )

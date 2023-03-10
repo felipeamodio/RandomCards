@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import Routes from './src/routes';
+import {Routes} from './src/routes';
 import Reactotron from 'reactotron-react-native';
 
 console.tron = Reactotron
@@ -11,7 +11,7 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <Routes />
+      <Routes initialRoute='Home' />
     </>
   );
 }

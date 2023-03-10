@@ -5,6 +5,7 @@ const colors = {
     lightGreen: '#539165',
     dark: '#2E3840',
     gold: '#F7C04A',
+    grey: '#A9A9A9',
 }
 
 const size = {
