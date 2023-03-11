@@ -1,8 +1,7 @@
 const colors = {
     white: '#FFFFFF',
     black: '#000000',
-    pokerGreen: '#2E4F4F',
-    lightGreen: '#539165',
+    pokerGreen: 'rgb(83, 145, 101)',
     dark: '#2E3840',
     gold: '#F7C04A',
     grey: '#A9A9A9',
