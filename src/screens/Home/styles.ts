@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import theme from '../../global/theme';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.KeyboardAvoidingView`
     flex: 1;
     justify-content: center;
     align-items: center;

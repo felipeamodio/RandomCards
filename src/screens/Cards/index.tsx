@@ -6,24 +6,25 @@ import {useRoute} from '@react-navigation/native';
 import * as S from './styles';
 
 import Button from '../../components/Button';
-
 import { api } from '../../services/api';
+import theme from '../../global/theme';
 
-interface CardData{
+interface ICardData{
     value: string;
     suit: string;
     image: string;
 }
 
-interface CardProps{
-    data: CardData;
+interface ICardProps{
+    data: ICardData;
 }
 
-interface Props{
+interface IProps{
     name: string;
 }
 
-function AutoCard({data}: CardProps){
+// Traduzindo o nome dos naipes e das cartas
+function TranslateCard({data}: ICardProps){
     function translateSuit(suit: string): string {
         switch (suit) {
           case 'CLUBS':
@@ -57,28 +58,25 @@ function AutoCard({data}: CardProps){
 }
 
 export default function Cards(){
-    const [cards, setCards] = useState<CardData[]>([]);
+    const [cards, setCards] = useState<ICardData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [drawCount, setDrawCount] = useState(0);
     const [isAscendingOrder, setIsAscendingOrder] = useState(true);
 
     const route = useRoute();
-    const {name} = route.params as Props;
+    const {name} = route.params as IProps;
 
     const screenWidth = Dimensions.get('window').width;
-    const itemWidth = (screenWidth - 20) / 2;
+    const itemWidth = (screenWidth - 20) / 2;     
 
-    // useEffect(() => {
-    //     getCard();
-    // }, []);      
-
+    // Retornando as cartas do baralho, puxando da api
     useEffect(() => {
         async function getCard() {
             setIsLoading(true);
             try {
               const response = await api.get('new/draw/?count=52');
               const filteredCards = response.data.cards.filter(
-                (card: Card) => parseInt(card.value) <= 10 || card.value === 'ACE'
+                (card: ICardData) => parseInt(card.value) <= 10 || card.value === 'ACE'
               );
               const newCards = [];
               while(newCards.length < 5){
@@ -90,7 +88,6 @@ export default function Cards(){
                 }
               }
               setCards(newCards);
-            //   setDrawCount(1);
             } catch (error) {
               console.error(error);
             }
@@ -99,7 +96,7 @@ export default function Cards(){
           getCard();
     }, [])
 
-      
+      //função que permite sacar masi uma carta, no máximo 3 vezes
       async function getNewCard(){
         if(drawCount < 3){
             setIsLoading(true)
@@ -118,11 +115,12 @@ export default function Cards(){
         }
 
 
-        function renderItem({ item }: { item: CardData }) {
+        // função para não retornar as cartas de Rei, Valete e Rainha
+        function renderItem({ item }: { item: ICardData }) {
             if (["JACK", "QUEEN", "KING"].includes(item?.value)) {
                 return null;
               }
-          return <AutoCard data={item} />;
+          return <TranslateCard data={item} />;
         }
 
         function changeOrder() {
@@ -132,9 +130,12 @@ export default function Cards(){
 
     return(
        <S.Container>
-        <S.LabelCard>Nome: {name}</S.LabelCard>
+        <S.ContainerTitle>
+          <S.Title>Olá, {name}</S.Title>
+          <S.Rules>Aqui estão as 5 cartas geradas. Você pode sacar somente mais 3 cartas, e pode embaralha-lás também 😄</S.Rules>
+        </S.ContainerTitle>
             {isLoading ? (
-                <ActivityIndicator />
+                <ActivityIndicator size="small" color={theme.colors.white} />
             ) : (
             <>
                 <S.Content>

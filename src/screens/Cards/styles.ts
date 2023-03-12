@@ -18,8 +18,28 @@ export const LabelCard = styled.Text`
     font-weight: 700;
 `;
 
+export const ContainerTitle = styled.View`
+    padding-left: 20px;
+    padding-right: 20px;
+`;
+
+export const Title = styled.Text`
+    color: ${theme.colors.white};
+    font-weight: 600;
+    padding-top: 20px;
+    text-align: center;
+    font-size: ${theme.size.MD}px;
+`;
+
+export const Rules = styled.Text`
+    color: ${theme.colors.white};
+    font-weight: 600;
+    margin-top: 5px;
+    font-size: ${theme.size.SM}px;
+`;
+
 export const Content = styled.View`
-    margin-top: 100px;
+    margin-top: 15px;
     flex: 1;
     border: 1px solid;
     border-color: ${theme.colors.white};

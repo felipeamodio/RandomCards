@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Alert, Keyboard} from 'react-native'
+import {Alert, Keyboard, Platform} from 'react-native'
 import * as S from './styles';
 
 import theme from '../../global/theme';
@@ -13,15 +13,13 @@ export default function Home(){
     const navigation = useNavigation();
 
     function handleCards(){
-        if(name){
-            navigation.navigate('Cards', {name})
-        }else{
-            Alert.alert('Preencha o campo antes de avançar');
-        }
+        name ? 
+        navigation.navigate('Cards', {name}) : 
+        Alert.alert('Preencha o campo antes de avançar');
     }
 
     return(
-       <S.Container>
+       <S.Container behavior={Platform.OS === 'ios' ? 'padding': 'height'}>
             <S.Content>
                 <S.Label>♥️ Olá, bora fazer um joguinho de cartas? ♠️</S.Label>
                 <S.Label>Mas antes, como você gostaria de ser chamado?</S.Label>
